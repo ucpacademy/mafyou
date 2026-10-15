@@ -1,34 +1,45 @@
 "use client";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { useLanguage } from "@/components/LanguageProvider";
 
 export default function Hero() {
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const { t } = useLanguage();
   return (
-    <section ref={ref} className="relative flex min-h-screen items-center justify-center overflow-hidden">
-      <motion.div style={{ y }} className="absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-1/3 h-[60vw] w-[60vw] -translate-x-1/2 -translate-y-1/2 animate-pulse rounded-full bg-orange-600/30 blur-[140px]" />
-        <div className="absolute inset-0 bg-[repeating-linear-gradient(90deg,transparent_0_80px,rgba(255,255,255,0.04)_80px_81px)]" />
-        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black to-transparent" />
-      </motion.div>
-      <motion.div style={{ opacity }} className="px-6 text-center">
-        <motion.p initial={{ opacity: 0, letterSpacing: "1em" }} animate={{ opacity: 1, letterSpacing: "0.4em" }} transition={{ duration: 1.4 }} className="mb-6 text-sm uppercase text-orange-400">
-          Premium Motorbike Store
-        </motion.p>
-        <motion.h1 initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.1, delay: 0.2 }} className="bg-gradient-to-b from-white to-zinc-500 bg-clip-text text-7xl font-black tracking-tighter text-transparent sm:text-9xl">
-          MAFYOU
-        </motion.h1>
-        <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8, duration: 0.8 }} className="mx-auto mt-6 max-w-xl text-lg text-zinc-300">
-          Ride the extraordinary. Hand-picked machines, delivered with obsessive service.
-        </motion.p>
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }} className="mt-10 flex flex-wrap justify-center gap-4">
-          <Link href="#bikes" className="rounded-full bg-orange-600 px-8 py-3 font-semibold text-white transition hover:scale-105 hover:bg-orange-500">Explore the collection</Link>
-          <Link href="#story" className="rounded-full border border-white/30 px-8 py-3 font-semibold transition hover:bg-white/10">Our story</Link>
-        </motion.div>
+    <section aria-labelledby="hero-title" className="relative isolate flex min-h-[min(82svh,820px)] items-end overflow-hidden bg-[#171915]">
+      <Image
+        src="/bikes/sport-reference.jpg"
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="-z-20 object-cover object-center"
+      />
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(8,10,8,0.9)_0%,rgba(8,10,8,0.66)_45%,rgba(8,10,8,0.18)_100%)]" />
+      <div className="absolute inset-x-0 bottom-0 -z-10 h-2/3 bg-gradient-to-t from-[#111310] via-[#111310]/30 to-transparent" />
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.75, ease: "easeOut" }}
+        className="mx-auto w-full max-w-7xl px-5 pb-20 pt-24 sm:px-8 sm:pb-28"
+      >
+        <p className="mb-6 text-xs font-semibold uppercase tracking-[0.2em] text-[#ff8b6c]">MAFYOU / {t("hero.eyebrow")}</p>
+        <h1 id="hero-title" className="max-w-3xl font-serif text-5xl leading-[1.02] text-white sm:text-7xl lg:text-8xl">
+          {t("hero.titleFirst")}<br />{t("hero.titleSecond")} <span className="italic text-[#ff8b6c]">{t("hero.titleAccent")}</span>
+        </h1>
+        <p className="mt-6 max-w-xl text-base leading-7 text-zinc-200 sm:text-lg">
+          {t("hero.description")}
+        </p>
+        <div className="mt-9 flex flex-wrap items-center gap-4">
+          <Link href="#collection" className="inline-flex min-h-12 items-center gap-5 bg-[#ff6b45] px-6 font-semibold text-[#17100d] transition hover:bg-[#ff8b6c]">
+            {t("hero.findRide")} <span aria-hidden="true">↘</span>
+          </Link>
+          <Link href="#experience" className="inline-flex min-h-12 items-center border border-white/40 px-6 font-semibold text-white transition hover:border-white hover:bg-white/10">
+            {t("hero.stepInside")}
+          </Link>
+        </div>
+        <p className="mt-12 text-[10px] uppercase tracking-[0.18em] text-white/60">{t("hero.demo")}</p>
       </motion.div>
     </section>
   );

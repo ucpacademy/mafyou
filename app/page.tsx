@@ -1,54 +1,62 @@
+"use client";
 import Hero from "@/components/Hero";
-import BikeCard from "@/components/BikeCard";
-import Reveal from "@/components/Reveal";
-import { bikes, WHATSAPP_NUMBER } from "@/lib/bikes";
-
-const stats = [
-  ["200+", "Bikes delivered"],
-  ["24/7", "WhatsApp support"],
-  ["2 yrs", "Warranty"],
-  ["48h", "Fast delivery"],
-];
+import BikeCollection from "@/components/BikeCollection";
+import FounderNote from "@/components/FounderNote";
+import FaqSection from "@/components/FaqSection";
+import MarrakechMap from "@/components/MarrakechMap";
+import SiteHeader from "@/components/SiteHeader";
+import StorySlider from "@/components/StorySlider";
+import { demoImageCredits } from "@/lib/bikes";
+import { useLanguage } from "@/components/LanguageProvider";
 
 export default function Home() {
+  const { t } = useLanguage();
+  const steps = [
+    ["01", t("steps.oneTitle"), t("steps.oneBody")],
+    ["02", t("steps.twoTitle"), t("steps.twoBody")],
+    ["03", t("steps.threeTitle"), t("steps.threeBody")],
+  ];
+
   return (
-    <main>
-      <Hero />
-      <section id="story" className="relative px-6 py-32">
-        <Reveal className="mx-auto max-w-4xl text-center">
-          <h2 className="text-4xl font-black leading-tight sm:text-6xl">
-            Not just a shop.<br /><span className="text-orange-500">A way of riding.</span>
-          </h2>
-          <p className="mt-8 text-lg text-zinc-400">
-            Every MAFYOU motorbike is inspected, tuned and delivered ready to ride. Pick your machine, send your order on WhatsApp and we handle the rest.
-          </p>
-        </Reveal>
-      </section>
-      <section id="bikes" className="mx-auto max-w-7xl px-6 pb-32">
-        <Reveal><h2 className="mb-12 text-center text-4xl font-black sm:text-5xl">The Collection</h2></Reveal>
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {bikes.map((b, i) => <BikeCard key={b.slug} bike={b} index={i} />)}
-        </div>
-      </section>
-      <section className="border-y border-white/10 bg-gradient-to-r from-orange-950/40 via-black to-orange-950/40 px-6 py-24">
-        <div className="mx-auto grid max-w-5xl grid-cols-2 gap-10 text-center md:grid-cols-4">
-          {stats.map(([n, l], i) => (
-            <Reveal key={l} delay={i * 0.1}>
-              <div className="text-5xl font-black text-orange-500">{n}</div>
-              <div className="mt-2 text-sm uppercase tracking-widest text-zinc-400">{l}</div>
-            </Reveal>
+    <>
+      <SiteHeader />
+      <main>
+        <Hero />
+        <section id="steps" data-theme-surface aria-label={t("steps.aria")} className="mx-auto grid max-w-7xl gap-8 px-5 py-14 sm:grid-cols-3 sm:px-8 sm:py-16">
+          {steps.map(([number, title, description]) => (
+            <div key={number} className="flex gap-4 border-t border-white/15 pt-4">
+              <span className="text-xs font-semibold text-[#ff8b6c]">{number}</span>
+              <div>
+                <h2 className="font-semibold text-white">{title}</h2>
+                <p className="mt-2 max-w-xs text-sm leading-6 text-zinc-500">{description}</p>
+              </div>
+            </div>
           ))}
+        </section>
+        <StorySlider />
+        <BikeCollection />
+        <FounderNote />
+        <FaqSection />
+        <MarrakechMap />
+      </main>
+      <footer data-theme-surface className="border-t border-white/10 px-5 py-8 sm:px-8">
+        <div className="mx-auto flex max-w-7xl flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+          <div className="text-sm text-zinc-500">
+            <p>{t("footer.copyright")}</p>
+            <p className="mt-2">{t("footer.location")}</p>
+          </div>
+          <details className="max-w-2xl text-xs text-zinc-500">
+            <summary className="min-h-8 cursor-pointer text-zinc-300 underline decoration-white/30 underline-offset-4 hover:text-white">{t("footer.credits")}</summary>
+            <ul className="mt-3 space-y-2 leading-5">
+              {demoImageCredits.map((credit) => (
+                <li key={credit.label}>
+                  {credit.label}: {credit.credit} · <a href={credit.source} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-white">{t("footer.source")}</a>
+                </li>
+              ))}
+            </ul>
+          </details>
         </div>
-      </section>
-      <section className="px-6 py-32 text-center">
-        <Reveal>
-          <h2 className="text-4xl font-black sm:text-6xl">Ready to ride?</h2>
-          <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="mt-10 inline-block rounded-full bg-green-500 px-10 py-4 font-bold text-black transition hover:scale-105">
-            Chat on WhatsApp
-          </a>
-        </Reveal>
-      </section>
-      <footer className="border-t border-white/10 py-8 text-center text-sm text-zinc-500">© MAFYOU. All rights reserved.</footer>
-    </main>
+      </footer>
+    </>
   );
 }
